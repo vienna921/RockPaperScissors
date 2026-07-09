@@ -1,5 +1,14 @@
+// UI
+const container = document.querySelector("#container");
+
+const result = document.createElement("div");
+
+
+
+// the Game
 let humanScore = 0;
 let computerScore = 0;
+
 function getComputerChoice(){
     let choice = Math.floor(Math.random() * 3);
     if (choice === 0) {
@@ -13,59 +22,69 @@ function getComputerChoice(){
     }
 }
 
-function getHumanChoice() {
-    let choice = prompt("Would you like to choose rock, paper, or scissor?");
-    return choice;
-}
+// function getHumanChoice() {
+//     let choice = prompt("Would you like to choose rock, paper, or scissor?");
+//     return choice;
+// }
 
 function playRound(humanChoice, computerChoice) {
+    if (humanChoice.toLowerCase() === computerChoice.toLowerCase()) {
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | It's a Draw!`;
+    }
     if (humanChoice.toLowerCase() === "rock" && computerChoice.toLowerCase() === "paper") {
-        console.log("You Lose! Paper beats rock");
         computerScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Lose! Paper beats rock`;
     }
     else if (humanChoice.toLowerCase() === "rock" && computerChoice.toLowerCase() === "scissor") {
-        console.log("You Win! Rock beats scissor");
         humanScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Win! Rock beats scissor`;
     }
     else if (humanChoice.toLowerCase() === "paper" && computerChoice.toLowerCase() === "rock") {
-        console.log("You Win! Paper beats rock");
         humanScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Win! Paper beats rock`;
     }
     else if (humanChoice.toLowerCase() === "paper" && computerChoice.toLowerCase() === "scissor") {
-        console.log("You Lose! Scissor beats paper");
         computerScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Lose! Scissor beats paper`;
     }
     else if (humanChoice.toLowerCase() === "scissor" && computerChoice.toLowerCase() === "rock") {
-        console.log("You Lose! Rock beats scissor");
         computerScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Lose! Rock beats scissor`;
     }
     else if (humanChoice.toLowerCase() === "scissor" && computerChoice.toLowerCase() === "paper") {
-        console.log("You Win! Scissor beats paper");
         humanScore++;
+        return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Win! Scissor beats paper`;
     }
-    else {
-        console.log("It's a draw!");
-    }
+}
+function handleRound(humanChoice) {
+    const message = playRound(humanChoice, getComputerChoice());
+    if (humanScore === 5) {
+            result.textContent = "You WIN!";
+            return;
+        }
+        else if (computerScore === 5) {
+            result.textContent = "You LOSE!";
+            return;
+        }
+        else {
+            result.textContent = `${message} | Human Score: ${humanScore} | Computer Score: ${computerScore}`;
+        }
 }
 
 function playGame() {
-    let round = 0;
-    while (round != 5) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-        round++;
-    }
-    if (humanScore > computerScore) {
-        console.log("Final: You Win!");
-    }
-   else if (computerScore > humanScore){
-        console.log("Final: You Lose!");
-   }
-   else {
-        console.log("Final: It's a Tie!");
-   }
+    const choice_rock = document.querySelector("#btn_rock");
+    const choice_paper = document.querySelector("#btn_paper");
+    const choice_scissor = document.querySelector("#btn_scissor");
+    choice_rock.addEventListener("click", () => {
+        handleRound("rock");
+    });
+    choice_paper.addEventListener("click", () => {
+        handleRound("paper");
+    });
+    choice_scissor.addEventListener("click", () => {
+       handleRound("scissor");
+    });
+    container.appendChild(result);
 
 }
-
-console.log(playGame());
+playGame();
