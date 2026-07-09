@@ -56,14 +56,28 @@ function playRound(humanChoice, computerChoice) {
         return `You chose: ${humanChoice} | Computer chose: ${computerChoice} | You Win! Scissor beats paper`;
     }
 }
+// event listeners
+const choice_rock = document.querySelector("#btn_rock");
+const choice_paper = document.querySelector("#btn_paper");
+const choice_scissor = document.querySelector("#btn_scissor");
+const button_playAgain = document.querySelector("#playagain");
+
 function handleRound(humanChoice) {
     const message = playRound(humanChoice, getComputerChoice());
     if (humanScore === 5) {
             result.textContent = "You WIN!";
+            button_playAgain.style.display = "block";
+            choice_rock.disabled = true;
+            choice_paper.disabled = true;
+            choice_scissor.disabled = true;
             return;
         }
         else if (computerScore === 5) {
             result.textContent = "You LOSE!";
+            button_playAgain.style.display = "block";
+            choice_rock.disabled = true;
+            choice_paper.disabled = true;
+            choice_scissor.disabled = true;
             return;
         }
         else {
@@ -72,9 +86,8 @@ function handleRound(humanChoice) {
 }
 
 function playGame() {
-    const choice_rock = document.querySelector("#btn_rock");
-    const choice_paper = document.querySelector("#btn_paper");
-    const choice_scissor = document.querySelector("#btn_scissor");
+    button_playAgain.style.display = "none";
+
     choice_rock.addEventListener("click", () => {
         handleRound("rock");
     });
@@ -87,4 +100,14 @@ function playGame() {
     container.appendChild(result);
 
 }
+button_playAgain.addEventListener("click", () => {
+    choice_rock.disabled = false;
+    choice_paper.disabled = false;
+    choice_scissor.disabled = false;
+    humanScore = 0;
+    computerScore = 0;
+
+    result.textContent = "Choose Rock, Paper, or Scissor!";
+});
+
 playGame();
